@@ -33,23 +33,27 @@
   <!-- ======= Header ======= -->
   <header id="header" class="header-inner-pages">
     <div class="container d-flex align-items-center justify-content-lg-between">
-       <a href="index.html" class="me-auto me-lg-0"><img src="{% static 'assets/img/logo.png' %}" alt="" class="img-fluid" style="width: 35%;"></a>
+       <a href="{% url 'dracrawla:my_index_web' %}" class="me-auto me-lg-0"><img src="{% static 'assets/img/logo.png' %}" alt="" class="img-fluid" style="width: 35%;"></a>
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#about">Logs</a></li>
+          <li><a class="nav-link scrollto active" href="{% url 'dracrawla:my_index_web' %}">Home</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'dracrawla:loginhistory_view' %}">Logs</a></li>
           <li class="dropdown"><a href="#"><span>Account</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Manage Account</a></li>
-              <li><a href="#">Add Accounts</a></li>
+              <li><a href="{% url 'dracrawla:manageaccounts_view' %}">Manage Account</a></li>
+              <li><a href="{% url 'dracrawla:register_view' %}">Add Accounts</a></li>
             </ul>
           </li>
         </ul>
+
+
+
+        
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
       &nbsp;&nbsp;
-      <a href="#about" class="get-started-btn scrollto">Get Started</a>
+      <a href="{% url 'dracrawla:historicaldata_view' %}" class="get-started-btn scrollto">Get Started</a>
 
     </div>
   </header><!-- End Header -->
@@ -66,7 +70,10 @@
         </div>
 
       </div>
+      <a href="{% url 'dracrawla:createannouncements_view' %}" class="get-started-btn scrollto">Annoucement</a>
+
     </div>
+    
   </section>
 
   <!-- ======= Footer ======= -->
