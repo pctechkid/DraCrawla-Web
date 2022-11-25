@@ -1,0 +1,247 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>DraCrawla</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+  <!-- Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+  <style>
+
+  .card {
+      border: none;
+      height: 310px
+  }
+
+  .forms-inputs {
+      position: relative
+  }
+
+  .forms-inputs span {
+      position: absolute;
+      top: -18px;
+      left: 10px;
+      background-color: #fff;
+      padding: 5px 10px;
+      font-size: 15px
+  }
+
+  .forms-inputs input {
+      height: 50px;
+      width: 100%;
+      border: 2px solid #black
+  }
+
+  .forms-inputs input:focus {
+      box-shadow: none;
+      outline: none;
+      border: 2px solid #000
+  }
+
+  .btn {
+      height: 50px
+  }
+
+  .success-data {
+      display: flex;
+      flex-direction: column
+  }
+
+  .bxs-badge-check {
+      font-size: 90px
+  }
+  </style>
+
+</head>
+
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="header-inner-pages">
+    <div class="container d-flex align-items-center justify-content-lg-between">
+       <a href="{% url 'dracrawla:my_index_web' %}" class="me-auto me-lg-0"><img src="{% static 'assets/img/logo-clean.png' %}" alt="" class="img-fluid" style="width: 35%;"></a>
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="{% url 'dracrawla:my_index_web' %}">Home &emsp;</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+      &nbsp;&nbsp;
+      <a href="{% url 'dracrawla:main_view' %}" class="get-started-btn scrollto">Get Started</a>
+    </div>
+  </header><!-- End Header -->
+
+  
+  <section id="hero-login" class="d-flex align-items-center">
+    {% block content %}
+
+          <div class="container">
+            <form method="post" >
+              {% csrf_token %}
+            <div class="row">   
+                <div class="col-lg-7 col-md-6">
+                    <div class="text-center">
+                      <img class="img-fluid mx-auto" src="{% static 'assets/img/citu-logo.png' %}" style="width: 350px">
+                    </div>
+                </div>
+
+                <div class="col-lg-5 col-md-6">
+                  <h1 style="font-size: 30px; font-weight: 800; padding: 5px; margin: 0 0 5px 0; letter-spacing: 2px; text-transform: uppercase; color: #fff; font-family: 'Poppins', sans-serif;">LOGIN</h1>
+                    <div class="card px-5 py-5" id="form1">
+                        <div class="form-data" v-if="!submitted">
+                            <div class="forms-inputs mb-4 "> <span>Username</span> <input name ="username" autocomplete="off" type="text" v-model="email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true">
+                                <div class="invalid-feedback">A valid username is required!</div>
+                            </div>
+                            <div class="forms-inputs mb-4"> <span>Password</span> <input name="password" autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true">
+                                <div class="invalid-feedback">A valid password must be entered!</div>
+                            </div>
+                            {% endblock content %}
+                            <div class="mb-3"> 
+                              <a href="{% url 'dracrawla:logout_view' %}">
+                              <button class="btn w-100 shadow-none" style="background-color: #89343b; color: white">Login</button>
+                            </a>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                </div>
+            </div> 
+
+
+            <!-- </form> -->
+          </div>
+      
+    <!-- </div> -->
+  </section>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-info">
+              <img src="{% static 'assets/img/logo-clean.png' %}" class="img-fluid" style="width: 75%;">
+              <p>
+                <br>Cebu Institute of Technology - University
+              </p>
+              <div class="social-links mt-3">
+                <a href="https://www.facebook.com/CITUniversity/" class="facebook"><i class="bx bxl-facebook"></i></a>
+                <a href="https://twitter.com/cit_university" class="twitter"><i class="bx bxl-twitter"></i></a>
+                <a href="https://www.instagram.com/cit.university/?hl=en" class="instagram"><i class="bx bxl-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>CONTACT US</h4>
+            <ul>
+              <li>digiminds.support@gmail.com</li>
+              <li>+63 928 421 3074</li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>RELATED PROJECTS</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">POSTE</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">CUrb Flood</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-newsletter">
+            <h4>THE PROJECT</h4>
+            <p>DraCrawla (Drainage Crawler Robot) is a technology development initiative create a multi-sensory input probe for drainage inspection</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/purecounter/purecounter.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+  <script>
+    var app = new Vue({
+      el: '#form1',
+      data: function () {
+      return {
+      email : "",
+      emailBlured : false,
+      valid : false,
+      submitted : false,
+      password:"",
+      passwordBlured:false
+      }
+    },
+
+    methods:{
+      validate : function(){
+      this.emailBlured = true;
+      this.passwordBlured = true;
+      if( this.validEmail(this.email) && this.validPassword(this.password)){
+      this.valid = true;
+      }
+    },
+
+      validEmail : function(email) {
+        if (email.length > 0) {
+        return true;
+      }
+    },
+
+    validPassword : function(password) {
+      if (password.length > 0) {
+      return true;
+      }
+    },
+
+    submit : function(){
+          this.validate();
+          if(this.valid){
+          this.submitted = true;
+        }
+       }
+     }
+    });
+  </script>
+</body>
+</html>

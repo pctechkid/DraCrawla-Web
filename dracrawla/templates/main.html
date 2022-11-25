@@ -1,0 +1,402 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>DraCrawla</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <!-- <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"> -->
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- datatable -->
+  <link href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+  
+  <!-- test -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  
+  
+  <!-- fontawesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+  <style>
+    .shadow-none {
+      box-shadow: none !important;
+    }
+    #map {
+       height: 900px;
+       width: 100%;
+       overflow: hidden;
+       border: thin solid #333;
+       }
+    #capture {
+      height: 360px;
+      width: 480px;
+      overflow: hidden;
+      float: left;
+      background-color: #ECECFB;
+      border: thin solid #333;
+      border-left: none;
+      }
+    td {
+      text-align: center !important;
+    }
+
+    th {
+      text-align: center !important;
+    }
+
+    .button1 {width: 200px;}
+
+    a{
+      text-decoration: none;
+      color: inherit;
+    }
+    a.square_btn_up1{
+      text-decoration: none;
+      color: white;
+    }
+    a.square_btn_del1{
+      text-decoration: none;
+      color: white;
+    }
+
+    .square_btn_up1{
+        display: inline-block;
+        padding: 0.5em 1em;
+        text-decoration: none;
+        background: #668ad8;/*ButtonColor*/
+        color: #FFF;
+        border-bottom: solid 4px #25468e;
+        border-radius: 3px;
+    }
+    .square_btn_up1:active {/*on Click*/
+        --ms-transform: translateY(4px);
+        -webkit-transform: translateY(4px);
+        transform: translateY(4px);/*Move down*/
+        box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);/*Reduce Shadow*/
+        border-bottom: none;
+    }
+
+    .square_btn_del1{
+        display: inline-block;
+        padding: 0.5em 1em;
+        text-decoration: none;
+        background: #da3448;/*ButtonColor*/
+        color: #FFF;
+        border-bottom: solid 4px #6c141e;
+        border-radius: 3px;
+    }
+    .square_btn_del1:active {/*on Click*/
+        --ms-transform: translateY(4px);
+        -webkit-transform: translateY(4px);
+        transform: translateY(4px);/*Move down*/
+        box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);/*Reduce Shadow*/
+        border-bottom: none;
+    }
+    .field-icon {
+      margin-left: -30px;
+      margin-top: -25px;
+      position: relative;
+      z-index: 2;
+    }
+    .field-iconModal {
+      margin-left: 430px;
+      margin-top: -25px;
+      position: absolute;
+      z-index: 5;
+    } 
+  </style>
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header-inner-pages">
+    <div class="container d-flex align-items-center justify-content-lg-between">
+       <a href="{% url 'dracrawla:my_index_web' %}" class="me-auto me-lg-0"><img src="{% static 'assets/img/logo-clean.png' %}" alt="" class="img-fluid" style="width: 35%;"></a>
+
+       <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="{% url 'dracrawla:my_index_web' %}">Home</a></li>
+          <li class="dropdown"><a href="#"><span>{% for user in user %}<span class="fa-solid fa-user"></span>&nbsp;{{user.username}}{% endfor %}</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              {% for useradmin in user %}
+              {% with sups="superadmin" %}
+              {% if useradmin.username == sups %}
+              <li><a href="{% url 'dracrawla:manageaccounts_view_superadmin' %}">Manage Accounts</a></li>
+              {% else %}
+              <li><a href="{% url 'dracrawla:manageaccounts_view' %}">Accounts </a></li>
+              {% endif %}
+              {% endwith %}
+              {% endfor %}
+              <li><a href="{% url 'dracrawla:register_view' %}">Add Accounts</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'dracrawla:loginhistory_view' %}">Logs</a></li>
+              {% for useradmin in user %}
+              {% with sups="superadmin" %}
+              {% if useradmin.username == sups %}
+              <li><a type="submit" name='btnLogout' class="nav-link scrollto active" href="{% url 'dracrawla:logoutadmin_view' %}">Logout</a></li>
+              {% else %}
+              <li><a type="submit" name='btnLogout' class="nav-link scrollto active" href="{% url 'dracrawla:logout_view' %}">Logout</a></li>
+              {% endif %}
+              {% endwith %}
+              {% endfor %}
+            </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+        
+      </nav><!-- .navbar --> 
+      &nbsp;&nbsp;
+      <a href="{% url 'dracrawla:main_view' %}" class="get-started-btn scrollto">Get Started</a>
+    </div>
+  </header><!-- End Header -->
+
+
+<section id="contact" class="contact">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Main Panel</h2>
+          <p>Mandaue Drainage Network Map</p>
+          <!-- <button type="button" class="btn btn-success shadow-none"><span class="fa-solid fa-magnifying-glass"></span>&nbsp;Open Drainage Database</button> -->
+          <!-- Button trigger modal -->
+          <button class="btn btn-success collapsed shadow-none" type="button" data-toggle="collapse" data-target="#collapseTable" aria-expanded="false" aria-controls="collapseExample">
+            <span class="fa-solid fa-folder-open"></span>&nbsp;Open Drainage Database
+          </button>
+          <button class="btn btn-primary collapsed shadow-none" type="button" data-toggle="collapse" data-target="#collapseAdd" aria-expanded="false" aria-controls="collapseExample">
+            <span class="fa-solid fa-plus"></span>&nbsp;Add
+          </button>
+          <div class="collapse" id="collapseTable">
+            <div class="card card-body">
+              <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
+                <thead>
+                  <tr>
+                  <th>Drainage ID</th>
+                  <th>Size</th>
+                  <th>Shape</th>
+                  <th>Water Level</th>
+                  <th>Blockage</th>
+                  <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody> {% for drain in drainage %} <tr>
+                  <td>{{drain.did}}</td>
+                  <td>{{drain.size}}</td>
+                  <td>{{drain.shape}}</td>
+                  <td>{{drain.waterlevel}}</td>
+                  <td>{{drain.blockage}}</td>
+                  <td>
+                    <!-- update modal -->
+                    <a type="button" class="square_btn_up1" href="#" data-toggle="modal" data-target="#mainmodalupdate-{{drain.did}}">
+                    <i class="far fa-edit"></i>
+                    </a>
+                    <!-- Update Button trigger modal -->
+                    <div class="modal fade" id="mainmodalupdate-{{drain.did}}" tabindex="-1" role="dialog" aria-labelledby="exampleModal3Label" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModal3Label">Update</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form method="POST"> {% csrf_token %} 
+                            <div class="form-group">
+                              <label for="recipient-name" class="col-form-label">ID</label>
+                              <input name="uid-uid" value="{{drain.did}}" subject.type="text" class="form-control" id="drain-did" readonly>
+                              <label for="recipient-name" class="col-form-label">Size</label>
+                              <input type="text" name="drainage_size" value="{{drain.size}}" class="form-control">
+                              <label for="recipient-name" class="col-form-label">Shape</label>
+                              <input type="text" name="drainage_shape" value="{{drain.shape}}" class="form-control">
+                              <label for="recipient-name" class="col-form-label">Water Level</label>
+                              <input type="text" name="drainage_waterlevel" value="{{drain.waterlevel}}" class="form-control">
+                              <label for="recipient-name" class="col-form-label">Blockage?</label>
+                              <input type="text" name="drainage_blockage" value="{{drain.blockage}}" class="form-control" id=" user-name">
+                          </form>
+                      </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-success">Save changes</button>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                
+                    <!-- delete modal -->
+                    <a type="button" class="square_btn_del1" href="#" data-toggle="modal" data-target="#mainmodaldelete-{{drain.did}}">
+                    <i class="far fa-trash-alt"></i></a>
+
+                    <!-- Delete button trigger modal -->
+                    <!-- Modal -->
+                    <div class="modal fade" id="mainmodaldelete-{{drain.did}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenteredLabel">Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form>
+                            <div class="modal-body">
+                              <input type="text" name="drain-did" value={{drain.did}} hidden> Are you sure you want to delete?
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                              <button id="btnDelete" name="btnDelete" type="button" class="btn btn-success">Delete</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="map"></div>
+      </div>
+    </section><!-- End Contact Section -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-info">
+              <img src="{% static 'assets/img/logo-clean.png' %}" class="img-fluid" style="width: 75%;">
+              <p>
+                <br>Cebu Institute of Technology - University
+              </p>
+              <div class="social-links mt-3">
+                <a href="https://www.facebook.com/CITUniversity/" class="facebook"><i class="bx bxl-facebook"></i></a>
+                <a href="https://twitter.com/cit_university" class="twitter"><i class="bx bxl-twitter"></i></a>
+                <a href="https://www.instagram.com/cit.university/?hl=en" class="instagram"><i class="bx bxl-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>CONTACT US</h4>
+            <ul>
+              <li>digiminds.support@gmail.com</li>
+              <li>+63 928 421 3074</li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>RELATED PROJECTS</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">POSTE</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">CUrb Flood</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-newsletter">
+            <h4>THE PROJECT</h4>
+            <p>DraCrawla (Drainage Crawler Robot) is a technology development initiative create a multi-sensory input probe for drainage inspection</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/purecounter/purecounter.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+  <!-- <script src="https://cdn.socket.io/4.3.2/socket.io.esm.min.js"></script> -->
+  <script src="https://cdn.socket.io/4.5.3/socket.io.min.js" integrity="sha384-WPFUvHkB1aHA5TDSZi6xtDgkF0wXJcIIxXhC6h8OT8EH3fC5PWro5pWJ1THjcfEi" crossorigin="anonymous"></script>
+  <!-- <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script> -->
+
+  <!-- datatable -->
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+  <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready( function () {
+        $('.table').DataTable();
+    } );
+  </script>
+
+  <script>
+    
+    
+    var map;
+    var src = 'https://files-server.tk/0:/Server%20Downloads/mandauekml.kml';
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: new google.maps.LatLng(),
+        zoom: 12,
+        mapTypeId: 'satellite'
+      });
+
+      var kmlLayer = new google.maps.KmlLayer(src, {
+        suppressInfoWindows: true,
+        preserveViewport: false,
+        map: map
+      });
+      kmlLayer.addListener('click', function(event) {
+        var content = event.featureData.infoWindowHtml;
+        var testimonial = document.getElementById('capture');
+        testimonial.innerHTML = content;
+      });
+      // markers
+      const script = document.createElement("script");
+      script.src =
+  map.data.loadGeoJson("../static/assets/js/MC_MH_merged.geojson");
+  document.getElementsByTagName("head")[0].appendChild(script);
+      const eqfeed_callback = function (results) {
+  for (let i = 0; i < results.features.length; i++) {
+    const coords = results.type[i].geometry.properties;
+    const latLng = new google.maps.LatLng(coords[1], coords[0]);
+    console.log("a")
+    new google.maps.Marker({
+      position: latLng,
+      map: map,
+    });
+  }
+};
+    }
+  </script>
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArjWVRqxaiGh8MtxvpNON2nGIQxhfUX1w&callback=initMap">  </script>
+</body>
+
+</html>

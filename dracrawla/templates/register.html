@@ -1,0 +1,395 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>DraCrawla</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- fontawesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <style>
+
+  .card {
+      border: none;
+      height: 780px;
+  }
+
+  .forms-inputs {
+      position: relative
+  }
+
+  .forms-inputs span {
+      position: absolute;
+      top: -18px;
+      left: 10px;
+      background-color: #fff;
+      padding: 5px 10px;
+      font-size: 15px
+  }
+
+  .forms-inputs input {
+      height: 50px;
+      width: 100%;
+      border: 2px solid #black
+  }
+
+  .forms-inputs input:focus {
+      box-shadow: none;
+      outline: none;
+      border: 2px solid #000
+  }
+
+  .btn {
+      height: 50px
+  }
+
+  .success-data {
+      display: flex;
+      flex-direction: column
+  }
+
+  .bxs-badge-check {
+      font-size: 90px
+  }
+
+/* #message {
+  display:none;
+  background: #f1f1f1;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+} */
+
+/* #message p {
+  padding: 10px 35px;
+  font-size: 18px;
+} */
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  content: "✔";
+}
+.invalid {
+  color: red;
+}
+.invalid:before {
+  position: relative;
+  left: -35px;
+  content: "✖";
+}
+  </style>
+
+</head>
+
+<body>
+  {% block content %}
+  <!-- ======= Header ======= -->
+  <header id="header" class="header-inner-pages">
+    <div class="container d-flex align-items-center justify-content-lg-between">
+       <a href="{% url 'dracrawla:my_index_web' %}" class="me-auto me-lg-0"><img src="{% static 'assets/img/logo-clean.png' %}" alt="" class="img-fluid" style="width: 35%;"></a>
+
+       <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="{% url 'dracrawla:my_index_web' %}">Home</a></li>
+          <li class="dropdown"><a href="#"><span>{% for user in user %}<span class="fa-solid fa-user"></span>&nbsp;{{user.username}}{% endfor %}</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              {% for useradmin in user %}
+              {% with sups="superadmin" %}
+              {% if useradmin.username == sups %}
+              <li><a href="{% url 'dracrawla:manageaccounts_view_superadmin' %}">Manage Accounts</a></li>
+              {% else %}
+              <li><a href="{% url 'dracrawla:manageaccounts_view' %}">Accounts </a></li>
+              {% endif %}
+              {% endwith %}
+              {% endfor %}
+              <li><a href="{% url 'dracrawla:register_view' %}">Add Accounts</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'dracrawla:loginhistory_view' %}">Logs</a></li>
+              {% for useradmin in user %}
+              {% with sups="superadmin" %}
+              {% if useradmin.username == sups %}
+              <li><a type="submit" name='btnLogout' class="nav-link scrollto active" href="{% url 'dracrawla:logoutadmin_view' %}">Logout</a></li>
+              {% else %}
+              <li><a type="submit" name='btnLogout' class="nav-link scrollto active" href="{% url 'dracrawla:logout_view' %}">Logout</a></li>
+              {% endif %}
+              {% endwith %}
+              {% endfor %}
+            </ul>
+          </li>
+        </ul>   
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+      &nbsp;&nbsp;
+      <a href="{% url 'dracrawla:main_view' %}" class="get-started-btn scrollto">Get Started</a>
+    </div>
+  </header><!-- End Header -->
+
+  
+  <section id="hero-login" class="d-flex align-items-center" style="height: 900px">
+          <div class="container">
+            <form method="POST">
+              {% csrf_token %}
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-5">
+                  <h1 style="font-size: 30px; font-weight: 800; padding: 5px; margin: 0 0 5px 0; letter-spacing: 2px; text-transform: uppercase; color: #fff; font-family: 'Poppins', sans-serif;">ADD ACCOUNT</h1>
+                    <div class="card px-5 py-5" id="form1">
+                        <div class="form-data" v-if="!submitted">
+                            
+                            <div class="forms-inputs mb-4 "> <span>Username</span> <input name ="username" id="username" autocomplete="off" type="text" v-model="email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" required>
+                            </div>
+                              <div class="forms-inputs mb-4 "> <span>First Name</span> <input class="form-control" name ="first_name" id="first_name" autocomplete="off" type="text" required>
+                              </div>
+                              <div class="forms-inputs mb-4 "> <span>Last Name</span> <input class="form-control" name ="last_name" id="last_name" autocomplete="off" type="text" required>
+                              </div>
+
+                            </div>
+                            <div class="forms-inputs mb-4"> <span>Email</span> <input name="email" id="email"  autocomplete="off" type="text" v-model="text" class="form-control" v-on:blur="passwordBlured = true" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+                              required>
+                            </div>
+                            <div class="forms-inputs mb-4"> <span>Password</span> <input name="password" id="password" autocomplete="off" type="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+                            </div>
+                            <div class="forms-inputs mb-4"> <span>Confirm Password</span> <input name="confirmpassword" id="password2" autocomplete="off" type="password"  v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" required>
+                            </div>
+                            
+
+                            <div class="mb-3"> 
+                              <!-- <a href="{% url 'dracrawla:manageaccounts_view' %}"> -->
+                                <div class="card" style="height: 175px;">
+                                  <div class="card-body" id="message">
+                                    <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                                    <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                                    <p id="number" class="invalid">A <b>number</b></p>
+                                    <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                                    <!-- <p id="confirmm" class="invalid"><b>Confirm</b> password</p> -->
+                                  </div>
+                                </div><br>
+                              <button class="btn w-100 shadow-none" id="submit" style="background-color: #89343b; color: white" disabled>Submit</button>
+                              
+                            </div>
+                        </div>
+                    </div>            
+                    {% endblock content %}        
+                </div>
+            </div> 
+
+
+
+            </form>
+          </div>
+
+  </section>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-info">
+              <!-- <h3>Gp<span>.</span></h3> -->
+              <img src="{% static 'assets/img/logo-clean.png' %}" class="img-fluid" style="width: 75%;">
+              <p>
+                <br>Cebu Institute of Technology - University
+              </p>
+              <div class="social-links mt-3">
+                <a href="https://www.facebook.com/CITUniversity/" class="facebook"><i class="bx bxl-facebook"></i></a>
+                <a href="https://twitter.com/cit_university" class="twitter"><i class="bx bxl-twitter"></i></a>
+                <a href="https://www.instagram.com/cit.university/?hl=en" class="instagram"><i class="bx bxl-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>CONTACT US</h4>
+            <ul>
+              <li>digiminds.support@gmail.com</li>
+              <li>+63 928 421 3074</li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>RELATED PROJECTS</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">POSTE</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">CUrb Flood</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-newsletter">
+            <h4>THE PROJECT</h4>
+            <p>DraCrawla (Drainage Crawler Robot) is a technology development initiative create a multi-sensory input probe for drainage inspection</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/purecounter/purecounter.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+  <script>
+    var app = new Vue({
+      el: '#form1',
+      data: function () {
+      return {
+      email : "",
+      emailBlured : false,
+      valid : false,
+      submitted : false,
+      password:"",
+      passwordBlured:false
+      }
+    },
+
+    methods:{
+      validate : function(){
+      this.emailBlured = true;
+      this.passwordBlured = true;
+      if( this.validEmail(this.email) && this.validPassword(this.password)){
+      this.valid = true;
+      }
+    },
+
+      validEmail : function(email) {
+        if (email.length > 0) {
+        return true;
+      }
+    },
+
+    validPassword : function(password) {
+      if (password.length > 0) {
+      return true;
+      }
+    },
+
+    submit : function(){
+          this.validate();
+          if(this.valid){
+          this.submitted = true;
+        }
+       }
+     }
+    });
+  </script>
+  <script>
+    var myInput = document.getElementById("password");
+    var myInput2 = document.getElementById("password2");
+    var letter = document.getElementById("letter");
+    var capital = document.getElementById("capital");
+    var number = document.getElementById("number");
+    var length = document.getElementById("length");
+    // var confirmm = document.getElementById("confirmm");
+
+    // When the user clicks on the password field, show the message box
+    myInput.onfocus = function() {
+      document.getElementById("message").style.display = "block";
+    }
+    myInput2.onfocus = function() {
+      document.getElementById("message").style.display = "block";
+    }
+
+    // When the user clicks outside of the password field, hide the message box
+
+    // When the user starts to type something inside the password field
+    myInput.onkeyup = function() {
+      // Validate lowercase letters
+      var lowerCaseLetters = /[a-z]/g;
+      if(myInput.value.match(lowerCaseLetters)) {  
+        letter.classList.remove("invalid");
+        letter.classList.add("valid");
+      } else {
+        letter.classList.remove("valid");
+        letter.classList.add("invalid");
+      }
+      
+      // Validate capital letters
+      var upperCaseLetters = /[A-Z]/g;
+      if(myInput.value.match(upperCaseLetters)) {  
+        capital.classList.remove("invalid");
+        capital.classList.add("valid");
+      } else {
+        capital.classList.remove("valid");
+        capital.classList.add("invalid");
+      }
+
+      // Validate numbers
+      var numbers = /[0-9]/g;
+      if(myInput.value.match(numbers)) {  
+        number.classList.remove("invalid");
+        number.classList.add("valid");
+      } else {
+        number.classList.remove("valid");
+        number.classList.add("invalid");
+      }
+      
+      // Validate length
+      if(myInput.value.length >= 8) {
+        length.classList.remove("invalid");
+        length.classList.add("valid");
+      } else {
+        length.classList.remove("valid");
+        length.classList.add("invalid");
+      }
+      // Validate both pw fields
+      // if($('#password').val() == $('#password2').val() ){
+      //   confirmm.classList.remove("invalid");
+      //   confirmm.classList.add("valid");
+      // } else {
+      //   confirmm.classList.remove("valid");
+      //   confirmm.classList.add("invalid");
+      // }
+    }
+    $(':password').keyup(function() {
+        if($('#password').val() == $('#password2').val()) {
+          $('#submit').removeAttr('disabled');
+        } else {
+          $('#submit').attr('disabled', true);   
+        }
+    });
+  </script>
+</body>
+</html>
